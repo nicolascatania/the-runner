@@ -18,7 +18,7 @@ public class PriceCalculatorService {
     public ProductPrice calculate(String productId) {
         try {
             var futureBase = executor.submit(() -> getBasePrice(productId));
-            var futureTax = executor.submit(() -> getExternalTax());
+            var futureTax = executor.submit(this::getExternalTax);
             var futureDiscount = executor.submit(this::getUserDiscount);
 
             double base = futureBase.get();
@@ -36,17 +36,19 @@ public class PriceCalculatorService {
     }
 
     // I/O Simulations (Base de Datos, APIs, etc.)
-    private double getBasePrice(String id) throws InterruptedException {
+    // Made protected to allow tests to override and avoid Thread.sleep() during unit tests
+    @SuppressWarnings("unused")
+    protected double getBasePrice(String id) throws InterruptedException {
         Thread.sleep(200);
         return 100.0;
     }
 
-    private double getExternalTax() throws InterruptedException {
+    protected double getExternalTax() throws InterruptedException {
         Thread.sleep(500);
         return 0.21;
     }
 
-    private double getUserDiscount() throws InterruptedException {
+    protected double getUserDiscount() throws InterruptedException {
         Thread.sleep(300);
         return 10.0;
     }
