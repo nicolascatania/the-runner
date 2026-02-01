@@ -1,0 +1,17 @@
+spring:
+  threads:
+    virtual:
+      enabled: true
+
+  application:
+    name: the-runner
+
+  datasource:
+    url: jdbc:mysql://localhost:3308/runnerDB?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: myuser
+    password: secret
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQLDialect
+
